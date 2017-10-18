@@ -33,3 +33,12 @@
       user:
         name: vagrant
         groups: docker
+    - name: add docker to systemd
+      systemd:
+        name: docker
+        enabled: yes
+        masked: no
+    - name: enable docker on chkconfig on
+      service:
+        name: docker
+        enabled: yes
