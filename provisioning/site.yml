@@ -42,3 +42,19 @@
       service:
         name: docker
         enabled: yes
+    - name: get kernel name
+      shell: "uname -s"
+      register: kernel_name
+    - name: get cpu name
+      shell: "uname -m"
+      register: cpu_name
+    - name: download docker-compose command
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.16.1/docker-compose-{{ kernel_name.stdout }}-{{ cpu_name.stdout }}
+        checksum: "sha256:1804b0ce6596efe707b9cab05d74b161833ed503f0535a937dd5d17bea8fc50a"
+        dest: /usr/local/bin/docker-compose
+    - name: make docker-compose executable
+      file:
+        path: /usr/local/bin/docker-compose
+        state: file
+        mode: 0755
